@@ -1,0 +1,6 @@
+{
+    "name": "position",
+    "type": "invisible",
+    "description": "Plans out formation positions for stars, isn't rendered",
+    "controller": "lib/position.so"
+}
