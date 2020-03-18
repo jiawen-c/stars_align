@@ -8,7 +8,7 @@
 
 using namespace enviro;
 using namespace std;
-#define STAR_COUNT 40
+#define STAR_COUNT 70
 
 //! positionController class
 
@@ -57,7 +57,7 @@ class positionController : public Process, public AgentInterface {
 
     //! Increases counter
     void update() {
-        counter = (counter + 1) % 3;
+        counter = (counter + 1) % 5;
     }
 
     //! Empty
@@ -81,6 +81,8 @@ class positionController : public Process, public AgentInterface {
     Line lines;
     vector<Point> no_formation = lines.get_no();
     vector<Point> ya_formation = lines.get_ya();
+    vector<Point> uh_formation = lines.get_uhq();
+    vector<Point> nah_formation = lines.get_nah();
 
     //! Assigns star agents to positions in chosen formation
     //! \param which_formation Integer corresponding with formation to be populated
@@ -90,8 +92,8 @@ class positionController : public Process, public AgentInterface {
         // Copy data structure for used formation
         switch (which_formation) {
             case 0:
-                // Line formation
-                positions = line_formation;
+                // UH
+                positions = uh_formation;
                 break;
 
             case 1:
@@ -103,8 +105,14 @@ class positionController : public Process, public AgentInterface {
                 // YA
                 positions = ya_formation;
                 break;
+
+            case 3:
+                // NAH
+                positions = nah_formation;
+                break;
             default:
-                // MEH
+                // line
+                positions = line_formation;
                 break;
         }
 

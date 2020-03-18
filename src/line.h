@@ -35,6 +35,31 @@ class Line {
         return ya;
     }
 
+    //! Produces a formation for "UH?"
+    //! \return A vector of Point values which create a "UH?" formation
+    vector<Point> get_uhq() {
+        vector<Point> uh = get_u(-200, 50);
+        vector<Point> temp1 = get_h(-200 + width + 30, 50);
+        vector<Point> temp2 = get_qmark(-200 + 2*(width + 60), 50);
+        
+        uh.insert(uh.end(), temp1.begin(), temp1.end());
+        uh.insert(uh.end(), temp2.begin(), temp2.end());
+
+        return uh;
+    }
+
+    //! Produces a formation for "NAH"
+    //! \return A vector of Point values which create a "NAH" formation
+    vector<Point> get_nah() {
+        vector<Point> nah = get_n();//-200, 150);
+        vector<Point> temp1 = get_a(10, 50);
+        vector<Point> temp2 = get_h(20 + width, 50);
+        
+        nah.insert(nah.end(), temp1.begin(), temp1.end());
+        nah.insert(nah.end(), temp2.begin(), temp2.end());
+
+        return nah;
+    }
     private:
     int height = 150;
     int width = 120;
@@ -125,7 +150,65 @@ class Line {
         n.insert(n.end(), n2.begin(), n2.end());
 
         return n;
-    }    
+    }
+
+    //! Produces a vector representation of "?" given starting bottom left coordinates.
+    //! \param left x coordinate of bottom left of letter
+    //! \param bottom y coordinate of bottom left of letter
+    //! \return vector representation of "?"
+    vector<Point> get_qmark(int left, int bottom) {
+        int mid_height = bottom - (height/2);   // Inverted coordinate
+        double mid_width = left + (width/2);
+
+        vector<Point> n = get_line(Point{left, bottom - height}, Point{left + width, bottom - height}, 5);
+        vector<Point> n1 = get_line(Point{left + width, bottom - height}, Point{left + width, mid_height}, 3);
+        vector<Point> n2 = get_line(Point{mid_width, mid_height}, Point{left + width, mid_height}, 5);
+        vector<Point> n3 = get_line(Point{mid_width, mid_height}, Point{mid_width, bottom}, 3);
+
+        n.insert(n.end(), n1.begin(), n1.end());
+        n.insert(n.end(), n2.begin(), n2.end());
+        n.insert(n.end(), n3.begin(), n3.end());
+
+        n.push_back(Point{mid_width, bottom + 40});
+
+        return n;
+    }
+
+    //! Produces a vector representation of "H" given starting bottom left coordinates.
+    //! \param left x coordinate of bottom left of letter
+    //! \param bottom y coordinate of bottom left of letter
+    //! \return vector representation of "H"
+    vector<Point> get_h(int left, int bottom) {
+        int mid_height = bottom - (height/2);   // Inverted coordinate
+        double mid_width = left + (width/2);
+
+        vector<Point> n = get_line(Point{left, bottom}, Point{left, bottom - height}, 5);
+        vector<Point> n1 = get_line(Point{left + width, bottom}, Point{left + width, bottom - height}, 5);
+        vector<Point> n2 = get_line(Point{left, mid_height}, Point{left + width, mid_height}, 5);
+
+        n.insert(n.end(), n1.begin(), n1.end());
+        n.insert(n.end(), n2.begin(), n2.end());
+
+        return n;
+    }
+
+    //! Produces a vector representation of "U" given starting bottom left coordinates.
+    //! \param left x coordinate of bottom left of letter
+    //! \param bottom y coordinate of bottom left of letter
+    //! \return vector representation of "U"
+    vector<Point> get_u(int left, int bottom) {
+        int mid_height = bottom - (height/2);   // Inverted coordinate
+        double mid_width = left + (width/2);
+
+        vector<Point> n = get_line(Point{left, bottom}, Point{left, bottom - height}, 5);
+        vector<Point> n1 = get_line(Point{left + width, bottom}, Point{left + width, bottom - height}, 5);
+        vector<Point> n2 = get_line(Point{left, bottom}, Point{left + width, bottom}, 5);
+
+        n.insert(n.end(), n1.begin(), n1.end());
+        n.insert(n.end(), n2.begin(), n2.end());
+
+        return n;
+    }
 
 };
 
