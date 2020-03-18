@@ -9,11 +9,14 @@ typedef struct point {
         int y;
 } Point;
 
+//! Line Class
 
-// Creates vectors of points that eventually make letters
+//! Creates vectors of points that make letters or phrases
 class Line {
 
     public:
+    //! Produces a formation for "NO"
+    //! \return A vector of Point values which create a "NO" formation
     vector<Point> get_no() {
         vector<Point> no = get_n();
         vector<Point> temp = get_o(30, -50);
@@ -21,7 +24,9 @@ class Line {
 
         return no;
     }
-    
+
+    //! Produces a formation for "YA"
+    //! \return A vector of Point values which create a "YA" formation
     vector<Point> get_ya() {
         vector<Point> ya = get_y(-200, 150);
         vector<Point> temp = get_a(-200 + width + 30, 150);
@@ -35,7 +40,7 @@ class Line {
     int width = 120;
 
 
-    // Given beginning and end coordinates, creates a vector of point_count Points between the two (inclusive)
+    //! Given beginning and end coordinates, creates a vector of point_count Points between the two (inclusive)
     vector<Point> get_line (Point start, Point end, int point_count) {
         if (point_count < 2) {
             throw invalid_argument("Must have 2 or more points");
@@ -56,7 +61,8 @@ class Line {
         return line;
     }
 
-    // By default, starts at -100, -50
+    //! Produces a vector representation of "N." By default, starts at -100, -50
+    //! \return vector representation of "N"
     vector<Point> get_n() {
         vector<Point> n = get_line(Point{-100, -50}, Point{-100, 50}, 5);
         vector<Point> n1 = get_line(Point{-100, -50}, Point{-20, 50}, 6);
@@ -68,7 +74,10 @@ class Line {
         return n;
     }
 
-    // By default, letters are 100 points tall
+    //! Produces a vector representation of "O" given starting bottom left coordinates.
+    //! \param left x coordinate of bottom left of letter
+    //! \param bottom y coordinate of bottom left of letter
+    //! \return vector representation of "O"
     vector<Point> get_o(int left, int bottom) {
         vector<Point> n = get_line(Point{left, bottom}, Point{left, bottom + height}, 5);
         vector<Point> n1 = get_line(Point{left, bottom}, Point{left + width, bottom}, 5);
@@ -82,7 +91,10 @@ class Line {
         return n;
     }
 
-    // By default, letters are 100 points tall
+    //! Produces a vector representation of "Y" given starting bottom left coordinates.
+    //! \param left x coordinate of bottom left of letter
+    //! \param bottom y coordinate of bottom left of letter
+    //! \return vector representation of "Y"
     vector<Point> get_y(int left, int bottom) {
         int mid_height = bottom - (height/2);   // Inverted coordinate
         int mid_width = left + (width/2);
@@ -97,6 +109,10 @@ class Line {
         return n;
     }
 
+    //! Produces a vector representation of "A" given starting bottom left coordinates.
+    //! \param left x coordinate of bottom left of letter
+    //! \param bottom y coordinate of bottom left of letter
+    //! \return vector representation of "A"
     vector<Point> get_a(int left, int bottom) {
         int mid_height = bottom - (height/2);   // Inverted coordinate
         double mid_width = left + (width/2);

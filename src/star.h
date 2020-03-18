@@ -6,11 +6,16 @@
 using namespace enviro;
 using namespace std;
 
+//! StarController class
+
+//! Defines the individual star agent that wanders the space and gets into formation.
 class StarController : public Process, public AgentInterface {
 
     public:
+    //! Constructor
     StarController() : Process(), AgentInterface(), assigned(0), target_x(0), target_y(0){}
 
+    //! Initializes controller, and watches for instruction to wander, stop or go to a target
     void init() {
         watch("wander", [&](Event e) {
             
@@ -34,7 +39,6 @@ class StarController : public Process, public AgentInterface {
             
             if (a.compare(b) == 0) {
                 track_velocity(0, 0);
-                std::cout << e.value()["star_id"] << " is told to stop\n";
             }
         });
 
@@ -49,16 +53,21 @@ class StarController : public Process, public AgentInterface {
                 target_x = (int) e.value()["x"];
                 target_y = (int) e.value()["y"];
                 move_toward(target_x, target_y);
-                std::cout << e.value()["star_id"] << " is on the move\n";
             }
         });
     }
+
+    //! Empty
     void start() {}
+
+    //! On each update, move closer to target
     void update() {
         if (assigned) {
             move_toward(target_x, target_y, 150, 40 );
         }
     }
+
+    //! Empty
     void stop() {}
 
     private:
@@ -68,6 +77,9 @@ class StarController : public Process, public AgentInterface {
 
 };
 
+//! Star Class
+
+//! The Star class is controlled by the StarController
 class Star : public Agent {
     public:
     Star(json spec, World& world) : Agent(spec, world) {

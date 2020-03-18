@@ -10,12 +10,16 @@ using namespace enviro;
 using namespace std;
 #define STAR_COUNT 40
 
+//! positionController class
 
+//! Runs the front end of the simulation, processing button clicks and sending instructions to stars.
 class positionController : public Process, public AgentInterface {
 
     public:
-    positionController() : Process(), AgentInterface() {}
+    //! Constructor
+    positionController() : Process(), AgentInterface(), counter(0) {}
 
+    //! Initializes controller, and watches for button clicks to emit instructions to stars
     void init() {
         watch("button_click", [&](Event& e) {
             string value = e.value()["value"];
@@ -33,12 +37,10 @@ class positionController : public Process, public AgentInterface {
 
         watch("reset", [this](Event e) {
             emit(Event("wander"));
-            std::cout << "emitted: wander\n";
         });
 
         watch("align", [this](Event e) {
-            assign_position(2);
-            //TODO assign_position((rand() / 47) % 3);
+            assign_position(counter);
         });
 
 
@@ -50,8 +52,15 @@ class positionController : public Process, public AgentInterface {
         }
 
     }
+    //! Empty
     void start() {}
-    void update() {}
+
+    //! Increases counter
+    void update() {
+        counter = (counter + 1) % 3;
+    }
+
+    //! Empty
     void stop() {}
 
     const json STAR_STYLE = { 
@@ -62,6 +71,8 @@ class positionController : public Process, public AgentInterface {
                };
 
     private:
+    int counter; // Used to determine formation
+
     // Array of agent references
     int agent_ids[STAR_COUNT];
 
@@ -71,10 +82,12 @@ class positionController : public Process, public AgentInterface {
     vector<Point> no_formation = lines.get_no();
     vector<Point> ya_formation = lines.get_ya();
 
+    //! Assigns star agents to positions in chosen formation
+    //! \param which_formation Integer corresponding with formation to be populated
     void assign_position(int which_formation) {
         vector<Point> positions;    // Points to assign out to stars
         
-        // TODO copy data structure for used formation
+        // Copy data structure for used formation
         switch (which_formation) {
             case 0:
                 // Line formation
@@ -95,7 +108,7 @@ class positionController : public Process, public AgentInterface {
                 break;
         }
 
-        // copy agent ids
+        // Copy agent ids
         typedef struct ag_info {
             int id;
             bool is_assigned;
@@ -139,6 +152,9 @@ class positionController : public Process, public AgentInterface {
 
 };
 
+//! position Class
+
+//! The position class is controlled by the positionController. It is invisible, and sends instructions to star agents.
 class position : public Agent {
     public:
     position(json spec, World& world) : Agent(spec, world) {

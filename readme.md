@@ -43,7 +43,7 @@ You can press `Ctrl-C` at the `bash` interface to stop the enviro server.
 Getting the Stars Moving
 ===
 
-Click the "reset" button to see the stars move.
+Click the "Reset" button to see the stars move.
 
 Getting the Stars to Answer You
 ===
